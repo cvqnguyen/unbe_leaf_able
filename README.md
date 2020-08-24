@@ -5,8 +5,8 @@ https://www.kaggle.com/frederikklement/germantrees
 ## Purpose
 The goal here is to train a model that will accurately determine the identity of a tree by a picture of its leaf.
 
-## MVD
+## MVP
 A model that can accurately identify the tree species by leaf. 
 
-## Extra
+## MVP+
 Possibly expand into looking at identifying poisonous plants.
