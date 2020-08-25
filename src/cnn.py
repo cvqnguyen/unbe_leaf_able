@@ -20,7 +20,7 @@ def load_and_featurize_data():
     df = pd.read_csv('data/classes.csv')
     # Mask for Oak and Maple only
     df = df[(df['class'] == 'oak') | (df['class'] == 'maple')]
-
+    # Train test split
     train_df, val_df = train_test_split(df, test_size=0.25, random_state=4666)
     val_df, test_df = train_test_split(val_df, test_size = .50, random_state=4666)
     return train_df, val_df, test_df
@@ -31,6 +31,7 @@ def generators():
     train_datagen = ImageDataGenerator(rescale=1./255., shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
     test_datagen = ImageDataGenerator(rescale=1./255.)
 
+    # Create generators for train, test, val to save memory
     train_generator=train_datagen.flow_from_dataframe(dataframe=train_df, directory="./data/", 
                         x_col="image_name", y_col="class", subset='training', batch_size=32, seed=4666, 
                         shuffle=True, class_mode="categorical", target_size=(150,150))
@@ -67,7 +68,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
                      padding='valid'))  # 2nd conv. layer KEEP
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=pool_size))  # decreases size, helps prevent overfitting
-    model.add(Dropout(0.5))  # zeros out some fraction of inputs, helps prevent overfitting
+    model.add(Dropout(0.25))  # zeros out some fraction of inputs, helps prevent overfitting
     
 
     model.add(Conv2D(nb_filters,
@@ -79,7 +80,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
                      padding='valid'))  # 4th layer
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=pool_size))  # decreases size, helps prevent overfitting
-    model.add(Dropout(0.5))  # zeros out some fraction of inputs, helps prevent overfitting
+    model.add(Dropout(0.25))  # zeros out some fraction of inputs, helps prevent overfitting
 
     # now start a typical neural network
     model.add(Flatten())  # necessary to flatten before going into conventional dense layer  KEEP
@@ -102,24 +103,30 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
 
 if __name__ == '__main__':
     # important inputs to the model: don't changes the ones marked KEEP
-    batch_size = 2000  # number of training samples used at a time to update the weights
-    nb_classes = 10    # number of output possibilities: [0 - 9] KEEP
+    batch_size = 50  # number of training samples used at a time to update the weights
+    nb_classes = 2    # number of output possibilities: [0 - 9] KEEP
     nb_epoch = 10       # number of passes through the entire train dataset before weights "final"
-    img_rows, img_cols = 28, 28   # the size of the MNIST images KEEP
-    input_shape = (img_rows, img_cols, 1)   # 1 channel image input (grayscale) KEEP
+    img_rows, img_cols = 150, 150   # the size of the MNIST images KEEP
+    input_shape = (img_rows, img_cols, 2)   # 1 channel image input (grayscale) KEEP
     nb_filters = 20    # number of convolutional filters to use
     pool_size = (2, 2)  # pooling decreases image size, reduces computation, adds translational invariance
-    kernel_size = (4, 4)  # convolutional kernel size, slides over image to learn features
+    kernel_size = (3, 3)  # convolutional kernel size, slides over image to learn features
 
     train_df, val_df, test_df = load_and_featurize_data()
     train_generator, val_generator, test_generator = generators()
 
     model = define_model(nb_filters, kernel_size, input_shape, pool_size)
 
+    steps_per_epoch = int(train_df.shape[0] / batch_size)
     # during fit process watch train and test error simultaneously
-
-    model.fit_generator(train_generator, validation_data= val_generator)
+    # model.summary()
+    model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 0, validation_data=val_generator)
+    # model.fit_generator(train_generator, steps_per_epoch=2000 // batch_size,
+    #     epochs=50,
+    #     validation_data=val_generator,
+    #     validation_steps=800 // batch_size)
     
-    score = model.evaluate(test_df, verbose=0)
-    print('Test score:', score[0])
-    print('Test accuracy:', score[1])  # this is the one we care about
+    # score = model.evaluate(test_df, verbose=0)
+    # # model.evaluate(test_df, verbose=1)
+    # print('Test score:', score[0])
+    # print('Test accuracy:', score[1])  # this is the one we care about
