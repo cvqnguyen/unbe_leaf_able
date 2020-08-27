@@ -213,8 +213,9 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     return model
 
 def plot_hist(hist):
-    fig, ax = plt.subplots(figsize = (12,20), nrows=2)
-    fig.suptitle(name, fontsize =20)
+    n=8
+    fig, ax = plt.subplots(figsize = (12,18), nrows=2)
+    fig.suptitle('Conv:32:32:64;Full:64', fontsize =20)
 
     ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
     ax[0].plot(hist.history['loss'], label='train', zorder=30)
@@ -239,7 +240,7 @@ def plot_hist(hist):
     ax[1].legend(loc='upper left',prop={'size': 15})
     plt.axhline(0.8, color='steelblue', zorder=10, alpha=0.5)
     plt.axhline(0.9, color='crimson', zorder=10, alpha=0.5)
-    plt.savefig(name)
+    plt.savefig('images/plot.png')
     plt.show()
     
 
@@ -261,13 +262,13 @@ if __name__ == '__main__':
 
     steps_per_epoch = int(train_df.shape[0] / batch_size)
     # during fit process watch train and test error simultaneously
-    model.summary()
+    # model.summary()
     hist = model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
     # model.fit_generator(train_generator, steps_per_epoch=2000 // batch_size,
     #     epochs=50,
     #     validation_data=val_generator,
     #     validation_steps=800 // batch_size)
-    
+    plot_hist(hist)
     score = model.evaluate(test_generator, verbose=1)
     
     # model.evaluate(test_df, verbose=1)
