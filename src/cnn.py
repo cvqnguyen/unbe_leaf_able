@@ -212,6 +212,12 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
                   metrics=['accuracy'])
     return model
 
+def plot_hist(hist, name = Model)
+    fig, ax = plt.subplots(figsize = (12,20), nrows=2)
+    fig.suptitle(name, fontsize =20)
+
+    ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
+    
 
 if __name__ == '__main__':
     # important inputs to the model: don't changes the ones marked KEEP
@@ -231,14 +237,15 @@ if __name__ == '__main__':
 
     steps_per_epoch = int(train_df.shape[0] / batch_size)
     # during fit process watch train and test error simultaneously
-    # model.summary()
-    model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
+    model.summary()
+    # model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
     # model.fit_generator(train_generator, steps_per_epoch=2000 // batch_size,
     #     epochs=50,
     #     validation_data=val_generator,
     #     validation_steps=800 // batch_size)
     
     score = model.evaluate(test_generator, verbose=1)
+    
     # model.evaluate(test_df, verbose=1)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])  # this is the one we care about
