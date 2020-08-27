@@ -212,11 +212,35 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
                   metrics=['accuracy'])
     return model
 
-def plot_hist(hist, name = Model)
+def plot_hist(hist):
     fig, ax = plt.subplots(figsize = (12,20), nrows=2)
     fig.suptitle(name, fontsize =20)
 
     ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
+    ax[0].plot(hist.history['loss'], label='train', zorder=30)
+    ax[0].legend(loc='upper right')
+    ax[0].set(ylabel='loss',
+           ylim=[0, 2],
+           xlabel='epoch')
+    ax[0].yaxis.label.set_size(20)
+    ax[0].xaxis.label.set_size(20)
+    ax[0].legend(loc='upper right',prop={'size': 15})
+
+    ax[1].plot(hist.history['val_accuracy'], label='val', zorder=20)
+    ax[1].plot(hist.history['accuracy'], label='train', zorder=30)
+    h = hist.history['val_accuracy']
+    avg_h = [(sum(h[i:(i + n)])) / n for i in range(len(h) - n)]
+    ax[1].plot(np.arange(n, len(h)), avg_h, color='red', label='trend_val', zorder=40)
+    ax[1].set(ylabel='accuracy',
+           ylim=[0.6, 1.05],
+           xlabel='epoch')
+    ax[1].yaxis.label.set_size(20)
+    ax[1].xaxis.label.set_size(20)
+    ax[1].legend(loc='upper left',prop={'size': 15})
+    plt.axhline(0.8, color='steelblue', zorder=10, alpha=0.5)
+    plt.axhline(0.9, color='crimson', zorder=10, alpha=0.5)
+    plt.savefig(name)
+    plt.show()
     
 
 if __name__ == '__main__':
@@ -238,7 +262,7 @@ if __name__ == '__main__':
     steps_per_epoch = int(train_df.shape[0] / batch_size)
     # during fit process watch train and test error simultaneously
     model.summary()
-    # model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
+    hist = model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
     # model.fit_generator(train_generator, steps_per_epoch=2000 // batch_size,
     #     epochs=50,
     #     validation_data=val_generator,
