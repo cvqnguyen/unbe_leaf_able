@@ -230,15 +230,15 @@ def plot_hist(hist):
     ax[1].plot(hist.history['accuracy'], label='train', zorder=30)
     h = hist.history['val_accuracy']
     avg_h = [(sum(h[i:(i + n)])) / n for i in range(len(h) - n)]
-    ax[1].plot(np.arange(n, len(h)), avg_h, color='red', label='trend_val', zorder=40)
-    ax[1].set(ylabel='accuracy', ylim=[0.5, 1.05], xlabel='epoch')
+    ax[1].plot(np.arange(n, len(h)), avg_h, color='red', label='val_trend', zorder=40)
+    ax[1].set(ylabel='accuracy', ylim=[0.55, 1.05], xlabel='epoch')
     ax[1].xaxis.label.set_size(20)
     ax[1].yaxis.label.set_size(20)
     ax[1].legend(loc='upper left',prop={'size': 15})
     plt.axhline(0.8, color='darkgoldenrod', linestyle='--', zorder=10, alpha=0.5)
     plt.axhline(0.9, color='silver', linestyle='--',zorder=10, alpha=0.5)
     plt.axhline(0.95, color='goldenrod', linestyle='--',zorder=10, alpha=0.5)
-    plt.savefig('images/plot.png')
+    plt.savefig('images/200epochplot.png')
     plt.show()
     
 
@@ -246,13 +246,13 @@ if __name__ == '__main__':
     # important inputs to the model: don't changes the ones marked KEEP
     batch_size = 8  # number of training samples used at a time to update the weights
     nb_classes = 2   # number of output possibilities: [0 - 9] KEEP
-    nb_epoch = 2       # number of passes through the entire train dataset before weights "final"
+    nb_epoch = 200       # number of passes through the entire train dataset before weights "final"
     img_rows, img_cols = 100, 100   # the size of the MNIST images KEEP
     input_shape = (img_rows, img_cols, 3)   # 1 channel image input (grayscale) KEEP
     nb_filters = 32    # number of convolutional filters to use
     pool_size = (2, 2)  # pooling decreases image size, reduces computation, adds translational invariance
     kernel_size = (3, 3)  # convolutional kernel size, slides over image to learn features
-    strides = (1, 1)
+    # strides = (1, 1)
     train_df, val_df, test_df = load_and_featurize_data()
     train_generator, val_generator, test_generator = generators()
 
