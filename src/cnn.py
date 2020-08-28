@@ -1,5 +1,5 @@
 # from tensorflow import keras
-## keras backend for amd gpu --> IS ACTUALLY SLOWER THAN CPU ON 2015 iMac lol
+## keras backend for amd gpu --> IS ACTUALLY SLOWER THAN CPU ON 2015 iMac
 # import os
 # os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 # import keras
@@ -70,45 +70,8 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     #nb_filters, kernel_size, input_shape, pool_size
     model = Sequential()  # model is a linear stack of layers (don't change)
 
-    # note: the convolutional layers and dense layers require an activation function
-    # see https://keras.io/activations/
-    # and https://en.wikipedia.org/wiki/Activation_function
-    # options: 'linear', 'sigmoid', 'tanh', 'relu', 'softplus', 'softsign'
-    # ADD MORE LAYERS
-    # 1st layer
-    # VGG16 - Base
-    # #Block 1
-    # model.add(Conv2D(input_shape=input_shape, filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))  
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))  # decreases size, helps prevent overfitting
-    # model.add(Dropout(0.3))  # zeros out some fraction of inputs, helps prevent overfitting
 
-    #Block 2
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=(5,1), padding='valid', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    
-    #Block 3
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='calid', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    
 
-    #Block 4
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-
-    #Block 5
-    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    
 
     model.add(Conv2D(input_shape=input_shape, filters=32, kernel_size=kernel_size, padding='valid', activation='relu')) 
     # model.add(Conv2D(filters=32, kernel_size=kernel_size, activation='relu'))
@@ -118,6 +81,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
+<<<<<<< HEAD
     # model.add(Dropout(0.5))
 
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
@@ -128,6 +92,18 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size)) 
     model.add(Conv2D(filters=64, kernel_size=kernel_size, activation='relu'))
+=======
+    model.add(Dropout(0.5))
+
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    model.add(MaxPooling2D(pool_size=pool_size))
+    model.add(Dropout(0,5))
+
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    model.add(MaxPooling2D(pool_size=pool_size)) 
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+>>>>>>> f86c5de65a7eb5e9ad7dc80ed5e7a39709fe57ba
     model.add(MaxPooling2D(pool_size=pool_size)) 
     model.add(Dropout(0.5))
 
@@ -140,72 +116,8 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     model.add(Dropout(0.5))
     # model.add(Dense(128, activation='relu'))
     # model.add(Dropout(0.5))
-    # # model.add(Dense(32, activation='relu'))
-    # # # model.add(Dense(4096, activation='relu'))
     model.add(Dense(nb_classes, activation='softmax')) 
 
-
-    # model.add(Conv2D(nb_filters,
-    #                  (kernel_size[0], kernel_size[1]),
-    #                  padding='same'))  # 3rd layer
-    # model.add(Activation('relu'))  # Activation specification necessary for Conv2D and Dense layers
-    # model.add(Conv2D(nb_filters,
-    #                  (kernel_size[0], kernel_size[1]),
-    #                  padding='same'))  # 4th layer
-    # model.add(Activation('relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))  # decreases size, helps prevent overfitting
-    # model.add(Dropout(0.1))  # zeros out some fraction of inputs, helps prevent overfitting
-
-    # # # Scratch Covnet
-    # model.add(Conv2D(input_shape=input_shape, filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(SpatialDropout2D(0.1))
-    # model.add(BatchNormalization())
-
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(SpatialDropout2D(0.1))
-    # model.add(BatchNormalization())
-
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(SpatialDropout2D(0.1))
-    # model.add(BatchNormalization())
-
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(SpatialDropout2D(0.1))
-    # model.add(BatchNormalization())
-
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(SpatialDropout2D(0.1))
-    # model.add(BatchNormalization())
-
-    #VGG16 through application
-    # weights_path = '../keras/examples/vgg16_weights.h5'
-    # model_weights_path = 'fc_model.h5'
-
-    # model = VGG16(include_top=False, input_shape=input_shape)
-    # print('Model Loaded.')
-    
-
-    # # now start a typical neural network
-    # model.add(Flatten())  # necessary to flatten before going into conventional dense layer  KEEP
-    # print('Model flattened out to ', model.output_shape)
-    # model.add(Dense(120, activation='relu'))  # (only) 32 neurons in this layer, really?   KEEP
-    # model.add(Dropout(0.1))
-    # model.add(BatchNormalization())
-    # model.add(Dense(20, activation='relu'))  # (only) 32 neurons in this layer, really?   KEEP
-    # model.add(Dropout(0.1))
-    # model.add(BatchNormalization())
-    # model.add(Dense(20, activation='relu'))  # (only) 32 neurons in this layer, really?   KEEP
-    # model.add(Dropout(0.1))
-    # model.add(BatchNormalization())
-    # # # model.add(Dense(4096, activation='relu'))
-    # # # model.add(Dropout(0.5))  # zeros out some fraction of inputs, helps prevent overfitting
-    # model.add(Dense(nb_classes, activation='softmax')) 
-    
 
     # many optimizers available, see https://keras.io/optimizers/#usage-of-optimizers
     # suggest you KEEP loss at 'categorical_crossentropy' for this multiclass problem,
