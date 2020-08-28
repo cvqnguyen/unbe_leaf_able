@@ -54,7 +54,7 @@ def generators():
                         x_col="image_name", y_col="class", subset='training', batch_size=batch_size, seed=4666, 
                         shuffle=True, class_mode="categorical", target_size=(100,100))
     
-    val_generator=train_datagen.flow_from_dataframe(dataframe=val_df, directory="./data/", x_col="image_name", 
+    val_generator=test_datagen.flow_from_dataframe(dataframe=val_df, directory="./data/", x_col="image_name", 
                         y_col="class", batch_size=batch_size, seed=4666, shuffle=True, class_mode="categorical", 
                         target_size=(100,100))
 
@@ -122,8 +122,8 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
 
-    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    model.add(MaxPooling2D(pool_size=pool_size)) 
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(MaxPooling2D(pool_size=pool_size)) 
     # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
     # model.add(MaxPooling2D(pool_size=pool_size)) 
 
@@ -215,7 +215,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
 def plot_hist(hist):
     n=8
     fig, ax = plt.subplots(figsize = (12,18), nrows=2)
-    fig.suptitle('Conv:32:32:64:64;Full:64+DP:0.5', fontsize =20)
+    fig.suptitle('Conv:32:32:64;Full:64+DP:0.5', fontsize =20)
 
     ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
     ax[0].plot(hist.history['loss'], label='train', zorder=30)
@@ -237,7 +237,7 @@ def plot_hist(hist):
     plt.axhline(0.8, color='darkgoldenrod', linestyle='--', zorder=10, alpha=0.5)
     plt.axhline(0.9, color='silver', linestyle='--',zorder=10, alpha=0.5)
     plt.axhline(0.95, color='goldenrod', linestyle='--',zorder=10, alpha=0.5)
-    plt.savefig('images/32326464DP5200epochplot.png')
+    plt.savefig('images/323264DP5200epochplot.png')
     plt.show()
     
 
