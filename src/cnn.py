@@ -1,5 +1,5 @@
 # from tensorflow import keras
-# keras backend for amd gpu --> IS ACTUALLY SLOWER THAN CPU ON 2015 iMac lol
+## keras backend for amd gpu --> IS ACTUALLY SLOWER THAN CPU ON 2015 iMac lol
 # import os
 # os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 # import keras
@@ -12,7 +12,7 @@
 # from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 
 # CPU backend
-from tensorflow.keras import applications
+from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D, ZeroPadding2D, SpatialDropout2D, BatchNormalization, AveragePooling1D
@@ -85,45 +85,59 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     # model.add(Dropout(0.3))  # zeros out some fraction of inputs, helps prevent overfitting
 
     #Block 2
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=(1,5), padding='valid', activation='relu'))
+    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='same', activation='relu'))
     # model.add(Conv2D(filters=32, kernel_size=(5,1), padding='valid', activation='relu'))
     # model.add(MaxPooling2D(pool_size=pool_size))
     
     #Block 3
     # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='calid', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
     # model.add(MaxPooling2D(pool_size=pool_size))
-    # model.add(MaxPooling2D(pool_size=pool_size))
+    
 
     #Block 4
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='same', activation='relu'))
     # model.add(MaxPooling2D(pool_size=pool_size))
 
     #Block 5
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
-    # model.add(Conv2D(filters=512, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
+    # model.add(Conv2D(filters=128, kernel_size=kernel_size, padding='same', activation='relu'))
     # model.add(MaxPooling2D(pool_size=pool_size))
     
 
     model.add(Conv2D(input_shape=input_shape, filters=32, kernel_size=kernel_size, padding='valid', activation='relu')) 
-    model.add(MaxPooling2D(pool_size=pool_size))
+    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(MaxPooling2D(pool_size=pool_size))
+
     model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
+
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    model.add(MaxPooling2D(pool_size=pool_size)) 
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    model.add(MaxPooling2D(pool_size=pool_size))
+
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(MaxPooling2D(pool_size=pool_size)) 
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(MaxPooling2D(pool_size=pool_size)) 
 
     # #Flatten and Dense Layer
     
     model.add(Flatten())
-    #  #or subsetting
+    print('Model flattened out to ', model.output_shape)
+    # #  #or subsetting
     model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.5))
+    # model.add(Dense(1024, activation='relu'))
     # model.add(Dropout(0.5))
-    # # model.add(Dense(4096, activation='relu'))
+    # # model.add(Dense(32, activation='relu'))
+    # # # model.add(Dense(4096, activation='relu'))
     model.add(Dense(nb_classes, activation='softmax')) 
 
 
@@ -164,28 +178,13 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     # model.add(SpatialDropout2D(0.1))
     # model.add(BatchNormalization())
 
-    # VGG16 through application
+    #VGG16 through application
     # weights_path = '../keras/examples/vgg16_weights.h5'
     # model_weights_path = 'fc_model.h5'
 
-    # VGG16 = applications.VGG16(weights='imagenet', include_top=False, classes=2, input_shape=input_shape)
+    # model = VGG16(include_top=False, input_shape=input_shape)
     # print('Model Loaded.')
-
-    # model = Sequential()
-    # model.add(VGG16)
-    # model.add(Flatten())
-    # print('Model flattened out to ', model.output_shape)
-    # model.add(Dense(256, activation='relu'))
-    # model.add(Dropout(0.1))
-    # model.add(Dense(2, activation='relu'))
-    # top_model.add(Dropout(0.5))
-
-    # model.load_weights(model_weights_path)
-
     
-
-    # for layer in model.layers[:25]:
-    #     layer.trainable = False
 
     # # now start a typical neural network
     # model.add(Flatten())  # necessary to flatten before going into conventional dense layer  KEEP
@@ -216,7 +215,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
 def plot_hist(hist):
     n=8
     fig, ax = plt.subplots(figsize = (12,18), nrows=2)
-    fig.suptitle('Conv:32:32:64;Full:64', fontsize =20)
+    fig.suptitle('Conv:32:32:64:64;Full:64+DP:0.5', fontsize =20)
 
     ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
     ax[0].plot(hist.history['loss'], label='train', zorder=30)
@@ -238,7 +237,7 @@ def plot_hist(hist):
     plt.axhline(0.8, color='darkgoldenrod', linestyle='--', zorder=10, alpha=0.5)
     plt.axhline(0.9, color='silver', linestyle='--',zorder=10, alpha=0.5)
     plt.axhline(0.95, color='goldenrod', linestyle='--',zorder=10, alpha=0.5)
-    plt.savefig('images/200epochplot.png')
+    plt.savefig('images/323264DP5200epochplot.png')
     plt.show()
     
 
@@ -259,17 +258,20 @@ if __name__ == '__main__':
     model = define_model(nb_filters, kernel_size, input_shape, pool_size)
 
     steps_per_epoch = int(train_df.shape[0] / batch_size)
-    # during fit process watch train and test error simultaneously
+
+
+    
+
     # model.summary()
+    
     hist = model.fit(train_generator, steps_per_epoch = steps_per_epoch, epochs = nb_epoch, verbose = 1, validation_data=val_generator, validation_steps=val_df.shape[0]//batch_size)
-    # model.fit_generator(train_generator, steps_per_epoch=2000 // batch_size,
-    #     epochs=50,
-    #     validation_data=val_generator,
-    #     validation_steps=800 // batch_size)
+    
+    #Call plot function
     plot_hist(hist)
+
+    # during fit process watch train and test error simultaneously
     score = model.evaluate(test_generator, verbose=1)
     
-    # model.evaluate(test_df, verbose=1)
     print('Test score:', score[0])
     print('Test accuracy:', score[1])  # this is the one we care about
 
