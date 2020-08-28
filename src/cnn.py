@@ -81,18 +81,6 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
-<<<<<<< HEAD
-    # model.add(Dropout(0.5))
-
-    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, activation='relu'))
-    model.add(MaxPooling2D(pool_size=pool_size))
-    model.add(Dropout(0.5))
-
-    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    model.add(MaxPooling2D(pool_size=pool_size)) 
-    model.add(Conv2D(filters=64, kernel_size=kernel_size, activation='relu'))
-=======
     model.add(Dropout(0.5))
 
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
@@ -102,9 +90,8 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
 
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size)) 
-    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
->>>>>>> f86c5de65a7eb5e9ad7dc80ed5e7a39709fe57ba
-    model.add(MaxPooling2D(pool_size=pool_size)) 
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(MaxPooling2D(pool_size=pool_size)) 
     model.add(Dropout(0.5))
 
     # #Flatten and Dense Layer
