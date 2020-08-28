@@ -1,4 +1,4 @@
-# Detection of Leaves in a Random Forest full of Random Trees
+# Image Classification of Leaves using CNN
 ## The Dataset:
 https://www.kaggle.com/frederikklement/germantrees
 
@@ -10,3 +10,6 @@ A model that can accurately identify the tree species by leaf.
 
 ## MVP+
 Possibly expand into looking at identifying poisonous plants.
+
+## Presentation
+https://drive.google.com/file/d/1YyVIeJfuVW3VXinG_zhZ419IgvriuqIY/view?usp=sharing
