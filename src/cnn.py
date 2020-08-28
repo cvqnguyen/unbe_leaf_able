@@ -111,30 +111,34 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
     
 
     model.add(Conv2D(input_shape=input_shape, filters=32, kernel_size=kernel_size, padding='valid', activation='relu')) 
-    # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(Conv2D(filters=32, kernel_size=kernel_size, activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
+    # model.add(Dropout(0.5))
 
     model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     # model.add(Conv2D(filters=32, kernel_size=kernel_size, padding='valid', activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
+    # model.add(Dropout(0.5))
 
     model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    # model.add(Conv2D(filters=64, kernel_size=kernel_size, activation='relu'))
     model.add(MaxPooling2D(pool_size=pool_size))
+    model.add(Dropout(0.5))
 
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size)) 
-    # model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
-    # model.add(MaxPooling2D(pool_size=pool_size)) 
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, padding='valid', activation='relu'))
+    model.add(MaxPooling2D(pool_size=pool_size)) 
+    model.add(Conv2D(filters=64, kernel_size=kernel_size, activation='relu'))
+    model.add(MaxPooling2D(pool_size=pool_size)) 
+    model.add(Dropout(0.5))
 
     # #Flatten and Dense Layer
     
     model.add(Flatten())
     print('Model flattened out to ', model.output_shape)
     # #  #or subsetting
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(512, activation='relu'))
     model.add(Dropout(0.5))
-    # model.add(Dense(1024, activation='relu'))
+    # model.add(Dense(128, activation='relu'))
     # model.add(Dropout(0.5))
     # # model.add(Dense(32, activation='relu'))
     # # # model.add(Dense(4096, activation='relu'))
@@ -215,7 +219,7 @@ def define_model(nb_filters, kernel_size, input_shape, pool_size):
 def plot_hist(hist):
     n=8
     fig, ax = plt.subplots(figsize = (12,18), nrows=2)
-    fig.suptitle('Conv:32:32:64;Full:64+DP:0.5', fontsize =20)
+    fig.suptitle('Conv:32:32:64:64:64;Full:128+DP:0.5', fontsize =20)
 
     ax[0].plot(hist.history['val_loss'], label='val', zorder=20)
     ax[0].plot(hist.history['loss'], label='train', zorder=30)
@@ -237,13 +241,13 @@ def plot_hist(hist):
     plt.axhline(0.8, color='darkgoldenrod', linestyle='--', zorder=10, alpha=0.5)
     plt.axhline(0.9, color='silver', linestyle='--',zorder=10, alpha=0.5)
     plt.axhline(0.95, color='goldenrod', linestyle='--',zorder=10, alpha=0.5)
-    plt.savefig('images/323264DP5200epochplot.png')
+    plt.savefig('images/3232646464D128DP5BS32plot.png')
     plt.show()
     
 
 if __name__ == '__main__':
     # important inputs to the model: don't changes the ones marked KEEP
-    batch_size = 16  # number of training samples used at a time to update the weights
+    batch_size = 32  # number of training samples used at a time to update the weights
     nb_classes = 2   # number of output possibilities: [0 - 9] KEEP
     nb_epoch = 200       # number of passes through the entire train dataset before weights "final"
     img_rows, img_cols = 100, 100   # the size of the MNIST images KEEP
